@@ -6,7 +6,7 @@ function App() {
   return (
     <>
       <Header />
-      <main className='my-0 mx-auto'>
+      <main className='my-3 flex flex-col gap-3 w-full justify-center items-center'>
         <WeatherSummary />
         <h2>Next 7 days weather</h2>
         <ul className="grid grid-flow-col">
