@@ -1,12 +1,13 @@
 import './App.css';
 import { Header } from './components/header';
+import { WeatherSummary } from './components/weather-summary';
 
 function App() {
   return (
     <>
       <Header />
       <main className='my-0 mx-auto'>
-        <div>Today's Weather summary</div>
+        <WeatherSummary />
         <h2>Next 7 days weather</h2>
         <ul className="grid grid-flow-col">
           <li>Day 1</li>
