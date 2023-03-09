@@ -15,7 +15,7 @@ export function getPlaces(queryPlace: string): Promise<IPlace[]> {
         long: place.long,
       }));
 
-      return places.slice(0, 10);
+      return places;
     })
     .catch((error) => {
       console.error(error);
