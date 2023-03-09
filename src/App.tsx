@@ -1,10 +1,10 @@
 import { createContext, useEffect, useState } from 'react';
-import './App.css';
 import { Header } from './components/header';
 import { WeatherSummary } from './components/weather-summary';
 import { WeatherWeek } from './components/weather-week';
 import { getWeather } from './services/weather-api';
 import { IPlaceWeather } from './types/types';
+import './App.css';
 
 interface IAppContext {
   setPlace: (place: string) => void;
@@ -18,17 +18,17 @@ export const PlaceContext = createContext<IAppContext>({
 });
 
 function App() {
-  const [place, setPlace] = useState<string>('');
-  const [lat, setLat] = useState<number>(0);
-  const [lon, setLon] = useState<number>(0);
+  const mexicoCityLat = 19.4326077;
+  const mexicoCityLon = -99.133208;
+  const [place, setPlace] = useState<string>('Mexico City');
+  const [lat, setLat] = useState<number>(mexicoCityLat);
+  const [lon, setLon] = useState<number>(mexicoCityLon);
   const [placeWeather, setPlaceWeather] = useState<IPlaceWeather>();
 
   useEffect(() => {
     if (place) {
-      getWeather(lat, lon);
+      getWeather(lat, lon).then((weatherData) => setPlaceWeather(weatherData));
     }
-
-    return () => setPlace('');
   }, [place]);
 
   return (
@@ -36,7 +36,7 @@ function App() {
       <Header />
       <main className="my-3 flex w-full flex-col items-center justify-center gap-3">
         <WeatherSummary placeWeather={placeWeather!} />
-        <WeatherWeek />
+        <WeatherWeek place={place} lat={lat} lon={lon} />
       </main>
     </PlaceContext.Provider>
   );
