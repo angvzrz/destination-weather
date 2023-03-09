@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { IPlaceWeather } from '../types/types';
+import { I5DayForecast, IPlaceWeather, IWeatherCard } from '../types/types';
 
 export function getWeather(lat: number, lon: number): Promise<IPlaceWeather> {
   const baseUrl: string = import.meta.env.VITE_API_WEATHER_BASE_URL;
@@ -34,5 +34,41 @@ export function getWeather(lat: number, lon: number): Promise<IPlaceWeather> {
         wind_speed: 0,
         icon: '',
       };
+    });
+}
+
+export function getForecastWeather(
+  lat: number,
+  lon: number
+): Promise<IWeatherCard[]> {
+  const baseUrl: string = import.meta.env.VITE_API_WEATHER_FORECAST_URL;
+  const apiKey: string = import.meta.env.VITE_API_WEATHER_KEY;
+  const urlRequest = `${baseUrl}?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+  return axios
+    .get(urlRequest)
+    .then((response) => {
+      const forecastData: I5DayForecast[] = response?.data?.list;
+
+      // start populating at the middle day of the first day
+      // and then add the data of the middle day of the next day successively
+      const cardsWeekForecast: IWeatherCard[] = forecastData
+        .filter(
+          (_, index) => index === 3 || (index > 3 && (index - 3) % 8 === 0)
+        )
+        .map((day) => ({
+          temp: day.main.temp,
+          description: day.weather[0].main,
+          humidity: day.main.humidity,
+          wind_speed: day.wind.speed,
+          icon: day.weather[0].icon,
+        }));
+
+      return cardsWeekForecast;
+    })
+    .catch((error) => {
+      console.error(error);
+
+      return [];
     });
 }
