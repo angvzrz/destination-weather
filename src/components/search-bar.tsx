@@ -70,7 +70,7 @@ export function SearchBar() {
         <MatchedPlaces places={places} setInputActive={setIsActive} />
       )}
       {places.length === 0 && query && (
-        <div className="absolute z-10 mt-2 cursor-pointer bg-slate-100 py-3 px-4">
+        <div className="absolute z-10 mt-2 bg-slate-100 py-3 px-4">
           No results found
         </div>
       )}
