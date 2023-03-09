@@ -19,7 +19,7 @@ export function WeatherSummary({ placeWeather }: WeatherSummaryProps) {
   const iconUrl = `${baseUrl}${placeWeather?.icon}@2x.png`;
 
   return (
-    <section className="block w-3/4 rounded-md bg-slate-200">
+    <section className="mt-6 block w-3/4 rounded-md bg-slate-200">
       <h2 className="block w-full bg-slate-700 px-2 py-4 text-xl text-slate-100">
         {placeWeather?.place}
       </h2>
