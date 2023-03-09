@@ -8,13 +8,14 @@ export function SearchBar() {
   const [places, setPlaces] = useState<IPlace[]>([]);
   const [query, setQuery] = useState<string>('');
   const [isActive, setIsActive] = useState<boolean>(false);
-  const { setPlace, setLat, setLong } = useContext(PlaceContext);
+  const { setPlace, setLat, setLon: setLong } = useContext(PlaceContext);
 
   const handleMagnifyIconClick = () => {
     const firsMatchedPlace = places[0];
     setPlace(firsMatchedPlace?.display);
     setLat(parseFloat(firsMatchedPlace?.lat));
     setLong(parseFloat(firsMatchedPlace?.long));
+    setIsActive(false);
   };
 
   useEffect(() => {
