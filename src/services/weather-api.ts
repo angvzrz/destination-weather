@@ -1,10 +1,7 @@
 import axios from 'axios';
 import { IPlaceWeather } from '../types/types';
 
-export function getWeather(
-  lat: number,
-  lon: number
-): Promise<IPlaceWeather | {}> {
+export function getWeather(lat: number, lon: number): Promise<IPlaceWeather> {
   const baseUrl: string = import.meta.env.VITE_API_WEATHER_BASE_URL;
   const apiKey: string = import.meta.env.VITE_API_WEATHER_KEY;
   const urlRequest = `${baseUrl}?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
@@ -27,6 +24,15 @@ export function getWeather(
     })
     .catch((error) => {
       console.error(error);
-      return {};
+
+      return {
+        place: '',
+        temp: 0,
+        main: '',
+        description: '',
+        humidity: 0,
+        wind_speed: 0,
+        icon: '',
+      };
     });
 }
