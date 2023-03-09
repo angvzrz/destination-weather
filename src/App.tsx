@@ -1,25 +1,44 @@
+import { createContext, useEffect, useState } from 'react';
 import './App.css';
 import { Header } from './components/header';
 import { WeatherSummary } from './components/weather-summary';
+import { WeatherWeek } from './components/weather-week';
+import { getWeather } from './services/weather-api';
+import { IPlaceWeather } from './types/types';
+
+interface IAppContext {
+  setPlace: (place: string) => void;
+  setLat: (lat: number) => void;
+  setLon: (lon: number) => void;
+}
+export const PlaceContext = createContext<IAppContext>({
+  setPlace: () => {},
+  setLat: () => {},
+  setLon: () => {},
+});
 
 function App() {
+  const [place, setPlace] = useState<string>('');
+  const [lat, setLat] = useState<number>(0);
+  const [lon, setLon] = useState<number>(0);
+  const [placeWeather, setPlaceWeather] = useState<IPlaceWeather>();
+
+  useEffect(() => {
+    if (place) {
+      getWeather(lat, lon);
+    }
+
+    return () => setPlace('');
+  }, [place]);
+
   return (
-    <>
+    <PlaceContext.Provider value={{ setPlace, setLat, setLon }}>
       <Header />
-      <main className='my-3 flex flex-col gap-3 w-full justify-center items-center'>
-        <WeatherSummary />
-        <h2>Next 7 days weather</h2>
-        <ul className="grid grid-flow-col">
-          <li>Day 1</li>
-          <li>Day 2</li>
-          <li>Day 3</li>
-          <li>Day 4</li>
-          <li>Day 5</li>
-          <li>Day 6</li>
-          <li>Day 7</li>
-        </ul>
+      <main className="my-3 flex w-full flex-col items-center justify-center gap-3">
+        <WeatherSummary placeWeather={placeWeather!} />
+        <WeatherWeek />
       </main>
-    </>
+    </PlaceContext.Provider>
   );
 }
 
