@@ -18,6 +18,11 @@ export function SearchBar() {
     setIsActive(false);
   };
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setQuery(event.target.value);
+    setIsActive(true);
+  };
+
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
       if (query.trim().length > 0) {
@@ -55,13 +60,14 @@ export function SearchBar() {
           type="search"
           placeholder="Search destination"
           value={query}
-          onChange={(event) => setQuery(event.target.value)}
+          onChange={(event) => handleInputChange(event)}
+          onClick={() => setIsActive(true)}
           onFocus={() => setIsActive(true)}
           onBlur={() => setIsActive(false)}
         />
       </form>
-      {places.length > 0 && query && (
-        <MatchedPlaces places={places} isInputActive={isActive} />
+      {places.length > 0 && query && isActive && (
+        <MatchedPlaces places={places} setInputActive={setIsActive} />
       )}
       {places.length === 0 && query && (
         <div className="block w-full cursor-pointer bg-slate-100 py-3 px-4">
